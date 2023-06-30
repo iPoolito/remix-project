@@ -9,3 +9,34 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  name           String?
+  tasks          Task[]
+  passwordHash   PasswordHash?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  passwordHashId Int
+}
+
+model PasswordHash {
+  id        Int      @id @default(autoincrement())
+  hash      String
+  userId    Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  status    String   @default("TODO")
+  title     String
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
