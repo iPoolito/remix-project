@@ -17,7 +17,7 @@ export const links: LinksFunction = () => [
 
 export const loader: LoaderFunction = (args) => rootAuthLoader(args);
 
-export const CatchBoundary = ClerkCatchBoundary();
+
 function App() {
   return (
     <html lang="en">
@@ -37,3 +37,4 @@ function App() {
   );
 }
 export default ClerkApp(App);
+export const CatchBoundary = ClerkCatchBoundary();

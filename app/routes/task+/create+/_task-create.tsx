@@ -1,4 +1,14 @@
+import { getAuth } from "@clerk/remix/ssr.server";
+import { type LoaderFunction, redirect } from "@remix-run/node";
 
+export const loader: LoaderFunction = async (args) => {
+    const session = await getAuth(args);
+    console.log(session)
+    // if (!sessionId) {
+    //     return redirect("/login");
+    // }
+    return null;
+}
 
 export default function CreateTask() {
 
