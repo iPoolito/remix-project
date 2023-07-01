@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,11 +11,11 @@ model User {
   id             Int           @id @default(autoincrement())
   email          String        @unique
   name           String?
-  tasks          Task[]
-  passwordHash   PasswordHash?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   passwordHashId Int
+  passwordHash   PasswordHash?
+  tasks          Task[]
 }
 
 model PasswordHash {
@@ -31,12 +28,21 @@ model PasswordHash {
 }
 
 model Task {
+  id           Int        @id @default(autoincrement())
+  title        String
+  content      String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  userId       Int
+  taskStatusId Int
+  TaskStatus   TaskStatus @relation(fields: [taskStatusId], references: [id])
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TaskStatus {
   id        Int      @id @default(autoincrement())
-  status    String   @default("TODO")
-  title     String
-  content   String?
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     Task[]
 }
